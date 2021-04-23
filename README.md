@@ -11,3 +11,10 @@ The fact I find writing raw HTML less tedious than either paper probably says so
 Raw HTML has quite a few limitations. It's not pleasant to edit. Reordering table rows is cumbersome. And I have to alternate between a text editor and a browser when I'm either editing or surveying. I found myself wanting to be able to change the order of the table rows in browser, or edit their contents, or select a different colour, or, depending on what I was doing, to sort them chronologically, by setting, title or by chapter. 
 
 These are all things that could be achieved using Excel. Pretty much my only reasons for not using Excel are wanting the table layout to be decided for me automatically (Excel can probably do that) and wanting the UI to be as simple and specific to the task as possible. 
+
+
+## Stack
+
+My initial inclination is to reach for Vue.js, Laravel and SQLite3. However, I have this niggling feeling that, since this is a relatively simple application, using frameworks would be overkill. I am going to build a prototype from scratch first and then maybe later I will use a more conventional stack. The idea being that building from scratch I'm a) going to learn something and b) going to end up with a more concrete understanding of the value Vue.js and Laravel bring to the table.
+
+
