@@ -19,6 +19,11 @@ function f() {
 	echo "Hello, router!";
 }
 
-add_route('GET', '/', f);
+function g() {
+	echo "test";
+}
+
+add_route('GET', '/', 'f');
+add_route('GET', '/test', 'g');
 
 do_route();
