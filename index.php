@@ -1,5 +1,6 @@
 <?php
 
+/*
 require 'database.php';
 
 $db = new NovelsDB();
@@ -10,3 +11,14 @@ echo "<h2>" . $novel['title'] . "</h2>";
 echo "<h2>" . $novel['author'] . "</h2>";
 
 $db->close();
+*/
+
+require 'router.php';
+
+function f() {
+	echo "Hello, router!";
+}
+
+add_route('GET', '/', f);
+
+do_route();
