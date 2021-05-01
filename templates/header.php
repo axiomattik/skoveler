@@ -15,11 +15,14 @@
 
 	<meta name="theme-color" content="#ffffff">
 
+	<script type="module">
+		document.documentElement.classList.remove('no-js');
+	</script>
+
+	<script type="module" src="/assets/js/skoveler-min.js"></script>
+
 </head>
 <body>
-<script type="module">
-	document.documentElement.classList.remove('no-js');
-</script>
 <div id="main">
 	<div id="head">
 
