@@ -1,20 +1,15 @@
 <?php
 
 require_once 'vendor/autoload.php';
-require 'database.php';
+require_once 'db/database.php';
+require_once 'sanitize-validate.php';
+require_once 'router.php';
+require_once 'users.php';
+require_once 'rest-api.php';
 
-$db = new NovelsDB();
-$novel = $db->get_novel(1);
+$db = new NovelsDB("./db/novels.db");
 
-echo "<h1>Skoveler</h1>";
-echo php_sapi_name();
-echo "<h2>" . $novel['title'] . "</h2>";
-echo "<h2>" . $novel['author'] . "</h2>";
-
-$db->close();
-
-require 'router.php';
-require 'rest-api.php';
+require_once 'templates/header.php';
 
 function f() {
 	echo "Hello, router!";

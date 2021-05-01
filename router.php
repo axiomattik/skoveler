@@ -81,7 +81,10 @@ function do_route() {
 		};
 	}
 
+	$action($query_params, $path_vars);
+
 	// show test output
+	/*
 	echo "<pre>";
 	echo "method: $method\n";
 	echo "path: $path\n";
@@ -92,5 +95,7 @@ function do_route() {
 	echo "\n\n";
 	$action($query_params, $path_vars);
 	echo "</pre>";
+	*/
+
 
 }

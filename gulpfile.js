@@ -1,5 +1,7 @@
-const { series } = require('gulp');
+const { series, parallel } = require('gulp');
 const run = require('gulp-run');
+
+const bs = require('browser-sync').create();
 
 function feedDB(cb) {
 	return run(`
@@ -9,10 +11,21 @@ function feedDB(cb) {
 	`).exec()
 }
 
-function defaultTask(cb) {
+
+function watchFiles(cb) {
 
 	cb();
 }
 
+function browsersync(cb) {
+	bs.init({proxy: 'localhost:8000'});
+	cb();
+}
+
 exports.feedDB = feedDB;
-exports.default = defaultTask;
+
+exports.watch = watchFiles;
+
+exports.serve = parallel(exports.watch, browsersync);
+
+exports.default = exports.serve;

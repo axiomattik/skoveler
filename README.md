@@ -18,3 +18,15 @@ These are all things that could be achieved using Excel. Pretty much my only rea
 My initial inclination is to reach for Vue.js, Laravel and SQLite3. However, I have this niggling feeling that, since this is a relatively simple application, using frameworks would be overkill. I am going to build a prototype from scratch first and then maybe later I will use a more conventional stack. The idea being that building from scratch I'm a) going to learn something and b) going to end up with a more concrete understanding of the value Vue.js and Laravel bring to the table.
 
 
+
+
+## Users
+
+When a user visits Skoveler, they are given the option of either logging in or continuing as a guest. If the log in successfully using valid credentials, the server sends a secret key which is stored as a cookie by the client and used to authenticate future requests. When a user attempts to perform an action, such as creating a new novel or chapter, or accessing the novel(s) of a specific user, etc.., the client uses the cookie to authenticate and then checks the user's 'role' in the 'account' table of the database. Current roles are: 'guest', 'user', admin 'admin'.
+
+If the user chose to continue as a guest, then a new empty user with the role of 'guest' is created in the database and the client is provided with a secret key. The guest account functions exactly as a real 'user' account, with perhaps some limitated privileges, but if the client loses the cookie secret, then any work associated with the guest account will not be recoverable using a username and password.
+
+
+
+
+

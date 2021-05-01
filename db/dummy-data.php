@@ -15,17 +15,8 @@ $NOVEL_COUNT = 10;
 $CHAPTER_COUNT = 100;
 
 
-$db = new NovelsDB();
+$db = new NovelsDB("./novels.db");
 $faker = Faker\Factory::create();
-
-
-for ( $i = 0; $i < $USER_COUNT; $i++ ) {
-	$db->add_user( 
-		$faker->name(),		// name
-		$faker->email(),	// email 
-		$faker->uuid()		// passhash
-	);
-}
 
 
 for ( $i = 0; $i < $NOVEL_COUNT; $i++ ) {

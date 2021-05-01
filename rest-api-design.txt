@@ -1,0 +1,58 @@
+api url: /api/v1
+
+# GET novels
+# return all novels current user has privs to access
+
+{
+	"novels": [
+		{
+
+		},
+		{
+
+		},
+	]
+}
+
+
+# GET novels/{slug}
+# if it belongs to current user OR is public
+# return novel identified by slug
+
+{
+	"novel": {
+		"id": 1,
+		"title": "A Novel",
+		"author": "John Smith",
+		"created": "2021-04-23 14:37:03",
+		"modified": "2021-04-23 14:37:33"
+		"chapters": [
+			{
+
+			}
+		]
+	}
+}
+
+
+# GET novels/{slug}/chapters/{slug}
+# if it belongs to current user OR is public
+# return chapter identified by slug
+
+{
+	"chapter": {
+
+	}
+}
+
+# GET users
+# if current user has sufficient privs
+# return all users
+
+# GET users/{name}
+# if current user is identified by name
+# return user
+# else return public information about user identified by name
+
+
+

@@ -1,24 +1,178 @@
 <?php
 
-if ( ! file_exists( "novels.db" ) ) {
-	echo "database not found";
-	die();
-}
-
 class NovelsDB extends SQLite3 {
-	function __construct() {
-		$this->open('novels.db');
+	function __construct($path) {
+		$this->open($path);
+	}
+
+	function _parse_value($val) {
+		switch ( gettype( $val ) ) {
+
+			case "boolean":
+				if ( $val ) {
+					return 1;
+				} else {
+					return 2;
+				}
+				break;
+
+			case "integer":
+			case "double":
+				return strval($val);
+
+			case "string":
+				return "\"$val\"";
+
+			default:
+				throw new Exception("unsupported type");
+		}
+
+
 	}
 
 
-	function add_user($name, $email, $passhash) {
-		$stmt = $this->prepare(
-			'INSERT INTO user(name, email, passhash) 
-			VALUES (:name, :email, :passhash)' );
-		$stmt->bindValue( ':name', $name, SQLITE3_TEXT );
-		$stmt->bindValue( ':email', $email, SQLITE3_TEXT );
-		$stmt->bindValue( ':passhash', $passhash, SQLITE3_TEXT );
-		$stmt->execute();
+	function _parse_values( $arr ) {
+		$result = array();
+		foreach ( $arr as $val ) {
+			array_push($result, $this->_parse_value($val));
+		}
+		return $result;
+	}
+
+
+	function insert($table, $values) {
+		$fields = implode(',', array_keys($values));
+		$value_placeholders = implode(",", array_map(function($s) {
+			return ":$s";
+		}, array_keys($values)));
+		$sql = "INSERT INTO $table ($fields) VALUES ($value_placeholders);";
+
+		$stmt = $this->prepare($sql);
+		foreach ($values as $field => $value) {
+			$stmt->bindValue(":$field", $value);
+		}
+
+		return $stmt->execute();
+	}
+
+
+	function select($table, $columns="*", $constraints=null) {
+		$rows = array();
+		if ( gettype( $columns ) == "array" ) {
+			$columns = implode( ',', $columns );
+		}
+		$sql = "SELECT $columns FROM $table";
+		if ( ! is_null( $constraints ) ) {
+			$sql .= " WHERE $constraints";
+		}
+		$sql .= ";";
+		$results = $this->query($sql);
+		if ( ! $results ) return false;
+		while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+			array_push($rows, $row);
+		}
+		return $rows;
+	}
+
+
+	function update($table, $values, $constraints=null) {
+		$assignments = implode(",", array_map(function($s) {
+			return "$s = :$s";
+		}, array_keys($values)));
+
+		$sql = "UPDATE $table SET $assignments";
+		if ( ! is_null( $constraints ) ) {
+			$sql .= " WHERE $constraints";
+		}
+
+		$stmt = $this->prepare($sql);
+		foreach( $values as $field => $value ) {
+			$stmt->bindValue(":$field", $value);
+		}
+
+		return $stmt->execute();
+
+	}
+
+
+	function delete($table, $constraints) {
+		$sql = "DELETE FROM $table WHERE $constraints;";
+		return $this->exec($sql);
+	}
+
+
+	function store_nonce($key, $nonce) {
+		return $this->insert(
+			"nonce",
+			array(
+				"key" => $key,
+				"value" => $nonce
+			)
+		);
+	}
+
+
+	function get_nonce($key, $nonce) {
+		$retrieved_nonce = $this->select(
+			"nonce", 
+			"*", 
+			"key = \"$key\" AND value = \"$nonce\""
+		);
+		if ( ! $retrieved_nonce ) return false;
+		return $retrieved_nonce[0];
+	}
+
+
+	function delete_nonce($key, $nonce) {
+		return $this->delete(
+			"nonce",
+			"key = \"$key\" AND value = \"$nonce\"",
+		);
+	}
+
+
+	function add_user($key) {
+		$this->insert("account", array("key" => $key));
+		return $this->get_user("key = \"$key\"");
+	}
+
+
+	function get_user($constraints) {
+		$users = $this->select("account", "*", $constraints);
+		if ( ! $users ) return false;
+		return $users[0];
+	}
+
+
+	function update_user($key, $values) {
+		return $this->update(
+			"account",
+			$values,
+			"key = \"$key\""
+		);
+	}
+
+
+	function add_key($userid, $key) {
+		$this->update(
+			"account", 
+			array("key" => $key),
+			"id = $userid"
+		);
+	}
+
+	function delete_key($key) {
+		return $this->update(
+			"account",
+			array("key" => ""),
+			"key = \"$key\""
+		);
+	}
+
+
+
+	function get_users() {
+		return $this->select("account");
 	}
 
 
