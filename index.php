@@ -9,10 +9,11 @@ require_once 'rest-api.php';
 
 $db = new NovelsDB("./db/novels.db");
 
-require_once 'templates/header.php';
 
 function f() {
+	require 'templates/header.php';
 	echo "Hello, router!";
+	require 'templates/footer.php';
 }
 
 function g() {
