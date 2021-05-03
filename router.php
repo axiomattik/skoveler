@@ -11,7 +11,6 @@ $routes = array(
 );
 
 
-
 function path_matches($path, $pattern, &$vars) {
 	$path_parts = explode('/', $path);
 	$pattern_parts = explode('/', $pattern);
@@ -31,6 +30,7 @@ function path_matches($path, $pattern, &$vars) {
 
 }
 
+
 function parse_query($query) {
 	$params = array();
 	foreach ( explode('&', $query) as $pair ) {
@@ -40,6 +40,7 @@ function parse_query($query) {
 	return $params;
 }
 
+
 function add_route($method, $path, $action) {
 	global $routes;
 	if ( ! array_key_exists( $method, $routes ) ) {
@@ -48,6 +49,7 @@ function add_route($method, $path, $action) {
 	$re_var = "/{(.*?)}/";
 	$routes[$method][$path] = $action;
 }
+
 
 function do_route() {
 	global $routes;
@@ -77,25 +79,10 @@ function do_route() {
 	// check for unfound route
 	if ( is_null( $action ) ) {
 		$action = function() {
-			echo "404 Not Found";
+			http_response_code(404);
+			require_once 'templates/404.php';
 		};
 	}
 
 	$action($query_params, $path_vars);
-
-	// show test output
-	/*
-	echo "<pre>";
-	echo "method: $method\n";
-	echo "path: $path\n";
-	echo "\nquery params: ";
-	print_r($query_params);
-	echo "\npath vars: ";
-	print_r($path_vars);
-	echo "\n\n";
-	$action($query_params, $path_vars);
-	echo "</pre>";
-	*/
-
-
 }
