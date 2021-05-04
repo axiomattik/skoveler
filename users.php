@@ -106,6 +106,14 @@ function get_user() {
 }
 
 
+add_route('GET', '/user/{username}', function($query_params) {
+	$user = get_user();
+	require 'templates/header.php';
+	require 'templates/profile-private.php';
+	require 'templates/footer.php';
+} );
+
+
 add_route( 'GET', '/login', function() {
 	require 'templates/login.php';
 } );
@@ -120,10 +128,10 @@ add_route( 'POST', '/login', function() {
 		die;
 	}
 
-	$email = sanitize_email($_POST["email"]);
+	$username = sanitize_email($_POST["username"]);
 	$password = $_POST["password"];
 
-	$user = $db->get_user("email = \"$email\"");
+	$user = $db->get_user("username = \"$username\"");
 
 	if ( ! password_verify($password, $user["passhash"]) ) {
 		http_response_code(401);
@@ -132,7 +140,8 @@ add_route( 'POST', '/login', function() {
 	}
 
 	set_secret($user["key"]);
-	http_response_code(204);
+	http_response_code(303);
+	header('Location: /');
 
 } );
 
@@ -143,11 +152,12 @@ add_route('POST', '/logout', function($query_params, $path_vars) {
 		die;
 	}
 	delete_secret();
-	http_response_code(204);
+	http_response_code(201);
+	header('Location: /');
 } );
 
 
-add_route('POST', '/register', function($query_params) {
+add_route('POST', '/create-account', function($query_params) {
 	global $db;
 
 	if ( ! verify_nonce( $_POST["nonce"] ) ) {
@@ -156,13 +166,13 @@ add_route('POST', '/register', function($query_params) {
 		die;
 	}
 
-	$email = sanitize_email($_POST["email"]);
+	$username = sanitize_email($_POST["username"]);
 	$password = $_POST["password"];
 	$passhash = password_hash($password, PASSWORD_DEFAULT);
 
-	if ( ! validate_email($email) ) {
+	if ( ! validate_username($username) ) {
 		http_response_code(403);
-		echo "Error: invalid email address";
+		echo "Error: invalid username";
 		die;
 	}
 
@@ -172,20 +182,21 @@ add_route('POST', '/register', function($query_params) {
 		die;
 	}
 
-	if ( $db->get_user("email = \"$email\"") ) {
+	if ( $db->get_user("username = \"$username\"") ) {
 		http_response_code(403);
-		echo "Error: email already in use";
+		echo "Error: username already exists";
 		die;
 	}
 
 	$user = get_user($_COOKIE["secret"]);
 
 	$user->update(array(
-		"email" => $email,
+		"username" => $username,
 		"passhash" => $passhash,
 		"role" => "user"
 	));
 
-	http_response_code(204);
+	http_response_code(303);
+	header('Location: /');
 });
 
