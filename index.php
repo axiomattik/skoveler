@@ -13,22 +13,10 @@ require_once 'rest-api.php';
 
 $db = new NovelsDB("./db/novels.db");
 
-function f() {
+add_route('GET', '/', function() {
 	require 'templates/header.php';
-	echo "Hello, router!";
+	require 'templates/index.php';
 	require 'templates/footer.php';
-}
-
-function g() {
-	echo "test";
-}
-
-add_route('GET', '/', 'f');
-add_route('GET', '/test', 'g');
-add_route('GET', '/test/{id}', function($query_params, $path_vars) {
-	echo "\n";
-	print_r( $path_vars );
-	echo "\n";
-} );
+});
 
 do_route();
