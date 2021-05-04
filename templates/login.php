@@ -4,50 +4,29 @@
 	<meta charset="utf-8">
 	<title>Login</title>
 
-<style>
-form {
-	display: flex;
-	gap: 0.5rem;
-	flex-direction: column;
-	width: 20rem;
-}
-
-</style>
-
 </head>
 
 <body>
 
-	<p>Current secret: <?php echo $_COOKIE["secret"]; ?></p>
-
 	<h2>Login</h2>
 
-	<form action="/login" method="post">
+	<form id="login-form" action="/login" method="post">
 		<input type="hidden" name="nonce" value="<?php echo do_nonce() ?>">
-		<input type="email" name="email">
+		<input type="username" name="username">
 		<input type="password" name="password">
-		<input type="submit" value="Log in">
+		<input type="submit" value="Log In">
 	</form>
 
 	<hr>
 
-	<h2>Register</h2>
+	<h2>Create Account</h2>
 
-	<form action="/register" method="post">
+	<form id="create-account-form" action="/create-account" method="post">
 		<input type="hidden" name="nonce" value="<?php echo do_nonce() ?>">
-		<input type="email" name="email">
+		<input type="username" name="username">
 		<input type="password" name="password">
-		<input type="submit" value="Register">
+		<input type="submit" value="Create Account">
 	</form>
-
-	<hr>
-
-	<h2>Logout</h2>
-
-	<form action="/logout" method="post">
-		<input type="submit" value="Log Out">
-	</form>
-
 
 </body>
 
