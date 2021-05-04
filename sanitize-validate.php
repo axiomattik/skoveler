@@ -68,6 +68,7 @@ function sanitize_email($s) {
 function validate_username($s) {
 	if ( strlen($s) == 0 ) return false;
 	if ( strlen($s) > 254 ) return false;
+	return true;
 }
 
 
