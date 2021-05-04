@@ -25,6 +25,26 @@
 <body>
 <div id="main">
 	<div id="head">
-
+		<?php
+		$user = get_user();
+		$uname = $user->username;
+		if ( $user->role == "guest" ) {
+			?>
+			<p>Welcome, guest!</p>
+			<a href="/login">login | create account</a>
+			<?php
+		} else {
+			?>
+			<p>Welcome, <a href="/user/<?php echo $uname; ?>">
+				<?php echo $uname?>
+			</a>
+			<div>
+				<form action="/logout" method="post">
+					<input type="submit" value="Log Out">
+				</form>
+			</div>
+			<?php
+		}
+		?>
 	</div>
 	<div id="content">
