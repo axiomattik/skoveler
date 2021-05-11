@@ -5,18 +5,20 @@ if (preg_match('/\.(?:png|jpg|jpeg|gif|css|js|svg)$/', $_SERVER["REQUEST_URI"]))
 }
 
 require_once 'vendor/autoload.php';
-require_once 'db/database.php';
 require_once 'sanitize-validate.php';
+require_once 'db/database.php';
 require_once 'router.php';
-require_once 'users.php';
-require_once 'rest-api.php';
+//require_once 'user.php';
+//require_once 'rest-api.php';
 
 $db = new NovelsDB("./db/novels.db");
+$router = new Router();
+//$user = new User();
 
-add_route('GET', '/', function() {
+$router->add('GET', '/', function() {
 	require 'templates/header.php';
 	require 'templates/index.php';
 	require 'templates/footer.php';
 });
 
-do_route();
+$router->run();

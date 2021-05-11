@@ -27,6 +27,33 @@ When a user visits Skoveler, they are given the option of either logging in or c
 If the user chose to continue as a guest, then a new empty user with the role of 'guest' is created in the database and the client is provided with a secret key. The guest account functions exactly as a real 'user' account, with perhaps some limitated privileges, but if the client loses the cookie secret, then any work associated with the guest account will not be recoverable using a username and password.
 
 
+## Roadmap
+
+- set up gulp for use with sass and js
+- entry page with optional login/registration 
+- display user's novel
+
+
+## Profile / Settings
+
+At the moment there is a temptation to conflate a account profile with the account settings and display them on the same page. I think this would be a mistake. They ought to be physically distinct to avoid the implication that private account settings are publically available.
+
+### Profile
+
+- username
+- about
+- novels
+
+### Account Settings
+
+- username
+- email address
+- password
+- is\_public (whether or not profile can be viewed by other users)
+- notifications
+	- email updates
+	- notifications about other user's activity
+
 
 
 

@@ -3,7 +3,9 @@ CREATE TABLE account(
 	username TEXT,
 	email TEXT,
 	passhash TEXT,
+	about TEXT,
 	role TEXT DEFAULT "guest",
+	is_public INTEGER DEFAULT 0,
 	key TEXT,
 	created TEXT DEFAULT CURRENT_TIMESTAMP,
 	modified TEXT DEFAULT CURRENT_TIMESTAMP
