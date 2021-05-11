@@ -29,19 +29,27 @@ function do_nonce() {
 }
 
 
-function verify_nonce($nonce) {
+function verify_nonce() {
 	global $db;
+
+	function reject() {
+		http_response_code(403);
+		echo "Error: could not verify nonce";
+		die;
+	}
+
+	$nonce = $_POST["nonce"];
+	if ( !$nonce ) reject();
+
 	$key = $_COOKIE["secret"];
 	$retrieved_nonce = $db->get_nonce($key, $nonce);
 
-	if ( ! $retrieved_nonce ) {
-		return false;
-	}
+	if ( ! $retrieved_nonce ) reject();
 
 	$age = timestamp_age($retrieved_nonce['created']);
 	if ( $age < 1 || $age > 3600 ) {
 		$db->delete_nonce($key, $nonce);
-		return false;
+		reject();
 	}
 
 	$db->delete_nonce($key, $nonce);

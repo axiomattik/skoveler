@@ -8,12 +8,12 @@ require_once 'vendor/autoload.php';
 require_once 'sanitize-validate.php';
 require_once 'db/database.php';
 require_once 'router.php';
-//require_once 'user.php';
+require_once 'user.php';
 //require_once 'rest-api.php';
 
 $db = new NovelsDB("./db/novels.db");
 $router = new Router();
-//$user = new User();
+$user = new User();
 
 $router->add('GET', '/', function() {
 	echo "hello, world!";
