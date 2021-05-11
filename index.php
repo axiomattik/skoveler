@@ -16,9 +16,7 @@ $router = new Router();
 //$user = new User();
 
 $router->add('GET', '/', function() {
-	require 'templates/header.php';
-	require 'templates/index.php';
-	require 'templates/footer.php';
+	echo "hello, world!";
 });
 
 $router->run();

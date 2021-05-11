@@ -71,11 +71,11 @@ class Router {
 
 		// parse query parameters and store them in $params
 		// and remove the query string (if any) from $path
-		$path = _parse_query_params($params);
+		$path = $this->_parse_query_params($params);
 
 		// try to find a match to $path
 		// if successful, path variables are stored in $vars
-		foreach ( $routes[$method] as $pattern => $cb) {
+		foreach ( $this->routes[$method] as $pattern => $cb) {
 			if ( $this->_matches( $path, $pattern, $vars ) ) {
 				$callback = $cb;
 				break;
