@@ -11,7 +11,7 @@
 	<h2>Login</h2>
 
 	<form id="login-form" action="/login" method="post">
-		<input type="hidden" name="nonce" value="<?php echo do_nonce() ?>">
+		<?php do_nonce(); ?>
 		<input type="username" name="username">
 		<input type="password" name="password">
 		<input type="submit" value="Log In">
@@ -21,8 +21,8 @@
 
 	<h2>Create Account</h2>
 
-	<form id="create-account-form" action="/create-account" method="post">
-		<input type="hidden" name="nonce" value="<?php echo do_nonce() ?>">
+	<form id="register-form" action="/register" method="post">
+		<?php do_nonce(); ?>
 		<input type="username" name="username">
 		<input type="password" name="password">
 		<input type="submit" value="Create Account">

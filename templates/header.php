@@ -26,20 +26,20 @@
 <div id="main">
 	<div id="head">
 		<?php
-		$user = get_user();
-		$uname = $user->username;
-		if ( $user->role == "guest" ) {
+		if ( $user->get_role() == "guest" ) {
 			?>
 			<p>Welcome, guest!</p>
 			<a href="/login">login | create account</a>
 			<?php
 		} else {
+			$uname = $user->get_username();
 			?>
 			<p>Welcome, <a href="/user/<?php echo $uname; ?>">
-				<?php echo $uname?>
+				<?php echo $uname; ?>
 			</a>
 			<div>
 				<form action="/logout" method="post">
+					<?php do_nonce(); ?>
 					<input type="submit" value="Log Out">
 				</form>
 			</div>

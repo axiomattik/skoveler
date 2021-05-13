@@ -22,10 +22,10 @@ function generate_key($length) {
 
 function do_nonce() {
 	global $db;
-	$key = $_COOKIE["secret"];
+	$key = $_COOKIE["userkey"];
 	$nonce = hash('sha512', generate_key(64));
 	$db->store_nonce($key, $nonce);
-	return $nonce;
+	echo '<input type="hidden" name="nonce" value="' . $nonce . '">';
 }
 
 
@@ -41,7 +41,7 @@ function verify_nonce() {
 	$nonce = $_POST["nonce"];
 	if ( !$nonce ) reject();
 
-	$key = $_COOKIE["secret"];
+	$key = $_COOKIE["userkey"];
 	$retrieved_nonce = $db->get_nonce($key, $nonce);
 
 	if ( ! $retrieved_nonce ) reject();

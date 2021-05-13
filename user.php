@@ -2,8 +2,7 @@
 
 class User {
 
-	public $key;
-
+	private $key;
 	private $username;
 	private $email;
 	private $role;
@@ -43,8 +42,12 @@ class User {
 	}
 
 
-	function _set_cookie() {
-		setcookie("userkey", $this->key, array(
+	function _set_cookie($key=null) {
+		if ( is_null($key) ) {
+			$key = $this->key;
+		}
+		
+		setcookie("userkey", $key, array(
 			"secure" => true,
 			"httponly" => true,
 			"samesite" => "Strict",
@@ -63,13 +66,19 @@ class User {
 
 
 	function get_email() {
-		return $this->email();
+		return $this->email;
 	}
 
 
 	function get_role() {
-		return $this->role();
+		return $this->role;
 	}
+
+
+	function get_key() {
+		return $this->key;
+	}
+
 
 	function set_username($username) {
 		global $db;
@@ -101,7 +110,7 @@ class User {
 	function set_password($password) {
 		global $db;
 		$passhash = password_hash($password, PASSWORD_DEFAULT);
-		$db->update_user(array(
+		$db->update_user($this->key, array(
 			"passhash" => $passhash
 		));
 	}
@@ -116,11 +125,13 @@ class User {
 
 	function login($username, $password) {
 		global $db;
+
 		$user = $db->get_user("username = \"$username\"");
 		if ( ! password_verify($password, $user["passhash"]) ) {
 			return false;
 		}
 		$this->_set_cookie($user["key"]);
+		return true;
 	}
 
 
